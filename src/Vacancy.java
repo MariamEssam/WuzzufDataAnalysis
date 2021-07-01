@@ -13,7 +13,7 @@ List<String> SkillsList;
     public Vacancy(String title, String company, String location,
                    String type, String level,Integer experienceLowerBound,
                    Integer experienceUpperBound
-            ,String country, ArrayList<String> skillsList) {
+            ,String country, List<String> skillsList) {
         Title = title;
         Company = company;
         Location = location;

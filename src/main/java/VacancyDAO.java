@@ -1,13 +1,26 @@
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import joinery.DataFrame;
+
+import java.beans.PropertyDescriptor;
 import java.io.File;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-
+import joinery.DataFrame;
 public class VacancyDAO
 {
     List<Vacancy> vacancylst;
     String path;
+    DataFrame<Object> df;
     public VacancyDAO(String path) {
         vacancylst=new ArrayList<>();
         this.path=path;
@@ -20,8 +33,14 @@ public class VacancyDAO
             String[] fields = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
             if(fields.length!=Constant.TOTAL)
                 continue;
-            vacancylst.add(ConvertVacancy(fields));
+            Vacancy vac=ConvertVacancy(fields);
+            if(vac==null)
+                continue;
+            vacancylst.add(vac);
         }
+        //Convert Parsed Classess to DataFrame
+        df=BeanToJoinery.convert(vacancylst,Vacancy.class);
+        df.iterrows().forEachRemaining(System.out::println);
     }
     Vacancy ConvertVacancy(String[] fields)
     {

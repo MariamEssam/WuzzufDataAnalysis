@@ -40,6 +40,8 @@ static public boolean Validate(String text)
 
             }
         }
+        if(start==-1) start=0;
+        if(end==-1) end=0;
         return new Integer[]{start,end};
     }
 }

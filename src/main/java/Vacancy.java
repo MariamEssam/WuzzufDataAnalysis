@@ -98,8 +98,10 @@ public class Vacancy {
     public void setSkillsList(List<String> skillsList) {
         SkillsList = skillsList;
     }
-
-
-
+    @Override
+    public String toString() {
+        return "Title:"+this.Title+
+                ", Company: "+this.Company;
+    }
 
 }

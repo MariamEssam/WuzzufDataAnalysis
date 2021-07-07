@@ -16,7 +16,7 @@ static public boolean Validate(String text)
         if(str.contains("null"))
             start=0;
         if(str.contains("+"))
-            end= Integer.MAX_VALUE;
+            end= 60;//If no maximum so we get default until retirement
         boolean firstfound=false;
         for(int i=0;i<str.length();i++)
         {

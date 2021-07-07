@@ -1,31 +1,21 @@
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import joinery.DataFrame;
 
-import java.beans.PropertyDescriptor;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import joinery.DataFrame;
 public class VacancyDAO
 {
     List<Vacancy> vacancylst;
     String path;
-    DataFrame<Object> df;
+
     public VacancyDAO(String path) {
         vacancylst=new ArrayList<>();
         this.path=path;
     }
-    public void Start() throws Exception
+    public List<Vacancy> Start() throws Exception
     {
         List<String> lines = this.Read();
         for (int i = 1; i < lines.size(); i++) {
@@ -38,9 +28,7 @@ public class VacancyDAO
                 continue;
             vacancylst.add(vac);
         }
-        //Convert Parsed Classess to DataFrame
-        df=BeanToJoinery.convert(vacancylst,Vacancy.class);
-        df.iterrows().forEachRemaining(System.out::println);
+        return vacancylst;
     }
     Vacancy ConvertVacancy(String[] fields)
     {
@@ -57,7 +45,7 @@ public class VacancyDAO
         for(int i=0;i<subfields.length;i++)
         {
             if(Validator.Validate(subfields[i]))
-                skilllst.add(subfields[i]);
+                skilllst.add( subfields[i].replaceAll("\"",""));
         }
        Integer arr[]= Validator.ValidateNum(fields[Constant.YEARS_OF_EXP].trim());
         return new Vacancy(fields[Constant.TITLE],fields[Constant.COMPANY],fields[Constant.LOCATION],
